@@ -143,10 +143,10 @@ if __name__ == '__main__':
         while option != 'Q':
             option = input("Enter:")
             if option == 'P':
-                if not l.readline():
+                c = l.readline()
+                if c == "":
                     print("You've played all the puzzles! Have a good day!")
                     break
-                c = l.readline()
                 words, letters = AddWords(c)
                 totalPoints = 0
                 for word in words:
