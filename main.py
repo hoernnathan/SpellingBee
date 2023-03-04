@@ -1,31 +1,28 @@
 import random
 
-def CreateBoard(letters, flag):
+def CreateBoard(letters):
     middle_letter = letters[0]
     other_letters = letters[1:7]
-    if flag:
-        random.shuffle(other_letters)
-
-    print("         _____          ")
-    print("        /     \         ")
-    print("  _____/  ", other_letters[0], "  \_____   ")
-    print(" /     \       /     \  ")
-    print("/  ", other_letters[1], "  \_____/  ", other_letters[2], "  \ ")
-    print("\       /     \       / ")
-    print(" \_____/  ", middle_letter, "  \_____/  ")
-    print(" /     \       /     \  ")
-    print("/  ", other_letters[3], "  \_____/  ", other_letters[4], "  \ ")
-    print("\       /     \       / ")
-    print(" \_____/  ", other_letters[5], "  \_____/  ")
-    print("       \       /        ")
-    print("        \_____/         ")
+    print("           _______          ")
+    print("          /       \         ")
+    print("  _______/   ", other_letters[0], "   \_______   ")
+    print(" /       \         /       \  ")
+    print("/   ", other_letters[1], "   \_______/   ", other_letters[2], "   \ ")
+    print("\         /       \         / ")
+    print(" \_______/   ", middle_letter, "   \_______/  ")
+    print(" /       \         /       \  ")
+    print("/   ", other_letters[3], "   \_______/   ", other_letters[4], "   \ ")
+    print("\         /       \         / ")
+    print(" \_______/   ", other_letters[5], "   \_______/  ")
+    print("         \         /        ")
+    print("          \_______/         ")
 
 def AddWords(c):
     letters = []
     for letter in c:
         letters.append(letter)
     #print(letters)
-    CreateBoard(letters, False)
+    CreateBoard(letters)
     words = []
     with open("wordlist.txt") as w:
         for line in w:
@@ -50,6 +47,7 @@ def AddWords(c):
 def PlayGame(words, letters, totalPoints):
     option = ""
     myWords = []
+    lettered_list = letters
     #print(totalPoints)
     pointTotals = {
         "GENIUS": round(totalPoints*0.7),
@@ -75,10 +73,16 @@ def PlayGame(words, letters, totalPoints):
                 break
         option = input("Enter:")
         if option == 'S':
-            CreateBoard(letters, True)
+            lettered_list = []
+            middle_letter = letters[0]
+            other_letters = letters[1:7]
+            random.shuffle(other_letters)
+            lettered_list.append(middle_letter)
+            for item in other_letters:
+                lettered_list.append(item)
+            CreateBoard(lettered_list)
         elif option == 'B':
-            CreateBoard(letters, False)
-            # TODO: does not save the current state of the board after being shuffled
+            CreateBoard(lettered_list)
         elif option == 'H':
             print("Here is the help guide for Spelling Bee!")
             print("Rules:")
@@ -99,7 +103,6 @@ def PlayGame(words, letters, totalPoints):
             for word in myWords:
                 print(word)
             print("")
-            # TODO: sort this list of words alphabetically
         elif option == 'P':
             print("Total number of words:", len(words))
             print("Total number of points:", totalPoints)
@@ -125,10 +128,14 @@ def PlayGame(words, letters, totalPoints):
             elif len(option) == 4:
                 print("Good! +", 1, "point")
                 userPoints += 1
-            else:
+            elif len(option) <= 6:
                 print("Nice! +", len(option), "points")
                 userPoints += len(option)
+            else:
+                print("Awesome! +", len(option), "points")
+                userPoints += len(option)
             myWords.append(option)
+            myWords.sort()
         else:
             print("Not accepted. Either this word is not in the word list, contains letters not in the hive, is too short, or it does not contain the middle letter.")
         if len(myWords) == len(words):
