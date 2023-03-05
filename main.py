@@ -24,7 +24,7 @@ def AddWords(c):
     #print(letters)
     CreateBoard(letters)
     words = []
-    with open("wordlist.txt") as w:
+    with open("wordlist2.txt") as w:
         for line in w:
             flag = True
             middle_letter_count = 0
@@ -150,11 +150,24 @@ if __name__ == '__main__':
         while option != 'Q':
             option = input("Enter:")
             if option == 'P':
-                c = l.readline()
-                if c == "":
-                    print("You've played all the puzzles! Have a good day!")
-                    break
-                words, letters = AddWords(c)
+                l.seek(0)
+                content = l.readlines()
+                for line in content:
+                    lets = line[3:-1]
+                    arr = []
+                    for let in lets:
+                        arr.append(let)
+                    arr.sort()
+                    print("Puzzle #", line[0:2], end="")
+                    print(" (letters: ", end="")
+                    for let in arr:
+                        print(let, "", end="")
+                    print(") ", end="")
+                    print("( middle letter:", line[3], ")")
+                puzzleNum = input("Which puzzle would you like to play? (type the number)")
+                c = content[int(puzzleNum)-1]
+                let = c[3:]
+                words, letters = AddWords(let)
                 totalPoints = 0
                 for word in words:
                     if len(word) == 4:
