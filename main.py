@@ -140,6 +140,17 @@ def PlayGame(words, letters, totalPoints):
             print("Not accepted. Either this word is not in the word list, contains letters not in the hive, is too short, or it does not contain the middle letter.")
         if len(myWords) == len(words):
             print("YOU FOUND ALL THE WORDS. YOU ARE A QUEEN BEE!")
+    if len(myWords) != len(words):
+        print("Here are the words that you missed:")
+        counter = 0
+        for word in words:
+            if word not in myWords:
+                if counter % 10 == 9:
+                    print(word)
+                else:
+                    print(word, "", end="")
+                counter += 1
+        print("")
 
 
 if __name__ == '__main__':
