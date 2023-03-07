@@ -18,7 +18,7 @@ Rules of the game:
 When prompted to enter a word, you can also type one of the following commands:
   - B to view the letter board
   - S to shuffle the letter board
-  - P to view your number of words, point totals for each ranking, and the total number of words and points to reach each level
+  - P to view your number of words and points, the total number of words and points, and the number of points to reach each ranking
   - W to view the words you have obtained
   - Q to quit a puzzle
   - H to bring up the help menu
