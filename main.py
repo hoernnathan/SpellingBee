@@ -142,6 +142,7 @@ def PlayGame(words, letters, totalPoints):
             print("YOU FOUND ALL THE WORDS. YOU ARE A QUEEN BEE!")
     if len(myWords) != len(words):
         print("Here are the words that you missed:")
+        words.sort()
         counter = 0
         for word in words:
             if word not in myWords:
@@ -175,7 +176,11 @@ if __name__ == '__main__':
                         print(let, "", end="")
                     print(") ", end="")
                     print("( middle letter:", line[3], ")")
-                puzzleNum = input("Which puzzle would you like to play? (type the number)")
+                validPuzzle = False
+                while not validPuzzle:
+                    puzzleNum = input("Which puzzle would you like to play? (type the number)")
+                    if puzzleNum.isdigit() and 0 < int(puzzleNum) <= len(content):
+                        validPuzzle = True
                 c = content[int(puzzleNum)-1]
                 let = c[3:]
                 words, letters = AddWords(let)
