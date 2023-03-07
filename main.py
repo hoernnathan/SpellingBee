@@ -71,7 +71,7 @@ def PlayGame(words, letters, totalPoints):
                 print("New level reached:", key)
                 currentLevel = key
                 break
-        option = input("Enter:")
+        option = input("Enter word:")
         if option == 'S':
             lettered_list = []
             middle_letter = letters[0]
@@ -96,6 +96,7 @@ def PlayGame(words, letters, totalPoints):
             print("  - B to view the letter board (the hive)")
             print("  - S to shuffle the letter board (the hive)")
             print("  - P to view your number of words, point totals, and the total number of words and points to reach each level")
+            print("  - W to view the words you have obtained")
             print("  - Q to quit this puzzle")
             print("  - H to bring up this help menu")
         elif option == 'W':
