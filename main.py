@@ -17,12 +17,10 @@ def CreateBoard(letters):
     print("         \         /        ")
     print("          \_______/         ")
 
-def AddWords(c):
-    letters = []
-    for letter in c:
-        letters.append(letter)
+def AddWords(letters, showBoard):
     #print(letters)
-    CreateBoard(letters)
+    if showBoard:
+        CreateBoard(letters)
     words = []
     with open("wordlist2.txt") as w:
         for line in w:
@@ -154,6 +152,43 @@ def PlayGame(words, letters, totalPoints):
                 counter += 1
         print("")
 
+def RandomGen():
+    lettersList = ['A', 'B', 'C', 'D', 'E',
+             'F', 'G', 'H', 'I', 'J',
+             'K', 'L', 'M', 'N', 'O',
+             'P', 'Q', 'R', 'T', 'U',
+             'V', 'W', 'X', 'Y', 'Z']
+    acceptableLetters = False
+    randLetList = []
+    while not acceptableLetters:
+        randLetList = random.sample(lettersList, 7)
+        vowelList = ['A','E','I','O','U']
+        vowelCount = 0
+        for letter in randLetList:
+            if letter in vowelList:
+                vowelCount += 1
+        if 'E' in randLetList and 'R' in randLetList:
+            acceptableLetters = False
+        elif 'Q' in randLetList and 'U' not in randLetList:
+            acceptableLetters = False
+        elif vowelCount < 1 or vowelCount > 3:
+            acceptableLetters = False
+        else:
+            words, letters = AddWords(randLetList, False)
+            if len(words) < 15:
+                acceptableLetters = False
+            else:
+                pangram = False
+                for word in words:
+                    letArr = []
+                    for letter in word:
+                        if letter not in letArr:
+                            letArr.append(letter)
+                    if len(letArr) == 7:
+                        pangram = True
+                if pangram:
+                    acceptableLetters = True
+    return randLetList
 
 if __name__ == '__main__':
     print("Welcome to Spelling Bee! Press P to start a new puzzle. Press Q to quit.")
@@ -178,17 +213,24 @@ if __name__ == '__main__':
                     print(") ", end="")
                     print("( middle letter:", line[3], ")")
                 validPuzzle = False
+                randomPuzzle = False
                 while not validPuzzle:
-                    puzzleNum = input("Which puzzle would you like to play? (type the number)")
-                    # TODO: add the ability for the user to generate a puzzle with a random set of letters
-                    # TODO: this would require checking to make sure there is at least one word in the word list that's a pangram using these letters
-                    # TODO: also need to check: no E and R, Q and U, at least 1 vowel and no more than 3, and that you can obtain at least 15 words
-                    # TODO: if any of these conditions fail, then need to regenerate a set of letters
-                    if puzzleNum.isdigit() and 0 < int(puzzleNum) <= len(content):
+                    puzzleNum = input("Which puzzle would you like to play? (type the number, or R for a random set of letters)")
+                    if puzzleNum == 'R':
+                        randomPuzzle = True
                         validPuzzle = True
-                c = content[int(puzzleNum)-1]
-                let = c[3:]
-                words, letters = AddWords(let)
+                    elif puzzleNum.isdigit() and 0 < int(puzzleNum) <= len(content):
+                        validPuzzle = True
+                if randomPuzzle:
+                    randLetList = RandomGen()
+                    words, letters = AddWords(randLetList, True)
+                else:
+                    c = content[int(puzzleNum)-1]
+                    let = c[3:]
+                    letterArray = []
+                    for letter in let:
+                        letterArray.append(letter)
+                    words, letters = AddWords(letterArray, True)
                 totalPoints = 0
                 for word in words:
                     if len(word) == 4:
