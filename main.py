@@ -180,6 +180,10 @@ if __name__ == '__main__':
                 validPuzzle = False
                 while not validPuzzle:
                     puzzleNum = input("Which puzzle would you like to play? (type the number)")
+                    # TODO: add the ability for the user to generate a puzzle with a random set of letters
+                    # TODO: this would require checking to make sure there is at least one word in the word list that's a pangram using these letters
+                    # TODO: also need to check: no E and R, Q and U, at least 1 vowel and no more than 3, and that you can obtain at least 15 words
+                    # TODO: if any of these conditions fail, then need to regenerate a set of letters
                     if puzzleNum.isdigit() and 0 < int(puzzleNum) <= len(content):
                         validPuzzle = True
                 c = content[int(puzzleNum)-1]
