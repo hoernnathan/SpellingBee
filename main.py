@@ -82,28 +82,27 @@ def PlayGame(words, letters, totalPoints):
         elif option == 'B':
             CreateBoard(lettered_list)
         elif option == 'H':
-            print("Here is the help guide for Spelling Bee!")
+            print("\nHere is the help guide for Spelling Bee!")
             print("Rules:")
             print("  - Create words by using the letters around the letter board (the hive)")
             print("  - Words must be at least 4 letters long, and every word must contain the center letter")
             print("  - You can reuse letters as much as you want in a word")
             print("  - For words of length 4, you earn 1 point. For words of greater length, you earn 1 point per letter")
             print("  - Every puzzle has at least 1 pangram word, which contains all the letters around the hive at least once. These are worth 7 extra points!")
-            print("When prompted for a word, you can also type one of the following:")
-            print("Commands:")
+            print("When prompted for a word, you can also type one of the following commands:")
             print("  - B to view the letter board (the hive)")
             print("  - S to shuffle the letter board (the hive)")
             print("  - P to view your number of words, point totals, and the total number of words and points to reach each level")
             print("  - W to view the words you have obtained")
             print("  - Q to quit this puzzle")
-            print("  - H to bring up this help menu")
+            print("  - H to bring up this help menu\n")
         elif option == 'W':
-            print("Obtained words: ")
+            print("\nYou have found", len(myWords), "words:")
             for word in myWords:
                 print(word)
             print("")
         elif option == 'P':
-            print("Total number of words:", len(words))
+            print("\nTotal number of words:", len(words))
             print("Total number of points:", totalPoints)
             print("Your number of words:", len(myWords))
             print("Your current score:", userPoints)
@@ -111,6 +110,7 @@ def PlayGame(words, letters, totalPoints):
             print("Point totals:")
             for key, value in pointTotals.items():
                 print(" ", key, value)
+            print("")
         elif option == 'Q':
             break
         elif option in myWords:
@@ -175,7 +175,7 @@ def RandomGen():
             acceptableLetters = False
         else:
             words, letters = AddWords(randLetList, False)
-            if len(words) < 15:
+            if len(words) < 15 or len(words) > 85:
                 acceptableLetters = False
             else:
                 pangram = False
@@ -215,7 +215,7 @@ if __name__ == '__main__':
                 validPuzzle = False
                 randomPuzzle = False
                 while not validPuzzle:
-                    puzzleNum = input("Which puzzle would you like to play? (type the number, or R for a random set of letters)")
+                    puzzleNum = input("\nWhich puzzle would you like to play? (type the number, or R for a random set of letters): ")
                     if puzzleNum == 'R':
                         randomPuzzle = True
                         validPuzzle = True
