@@ -1,26 +1,4 @@
 import random
-"""
-f = open("wordlist2.txt", "r")
-g = open("wordlist4.txt", "a")
-with open("wordlist3.txt") as w:
-    items = f.readlines()
-    items2 = w.readlines()
-    #items3 = g.readlines()
-    print(items)
-    for item in items2:
-        if item not in items:
-            g.write(item)
-        #inFile = False
-        #for word in w:
-        #    if word == item:
-        #        inFile = True
-        #        break
-        #if not inFile:
-        #    g.write(item)
-f.close()
-g.close()
-"""
-
 
 def PrintBoard(letters):
     middle_letter = letters[0]
@@ -93,7 +71,7 @@ def PlayGame(words, letters, totalPoints):
             if userPoints >= pointTotals[key]:
                 if key == currentLevel:
                     break
-                print("New level reached:", key)
+                print("New ranking reached:", key)
                 currentLevel = key
                 break
         option = input("Enter word:")
@@ -329,7 +307,7 @@ if __name__ == '__main__':
                         totalPoints += len(word)
                     else:
                         letter_list = []
-                        
+
                         # checks if the word contains all 7 letters, this is a pangram
                         for letter in word:
                             if letter not in letter_list:
