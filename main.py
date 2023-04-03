@@ -1,4 +1,51 @@
 import random
+# used to obtain pangrams not in the word list that are in spelling bee
+"""
+a = open("wordlist3.txt")
+for line in a:
+    if "," in line:
+        str = line.split(", ")
+        for i in range(len(str)):
+            if i == len(str)-1:
+                print(str[i], end="")
+            else:
+                print(str[i])
+    else:
+        print(line, end="")
+a.close()
+"""
+"""
+f = open("wordlist2.txt", "r")
+g = open("wordlist4.txt", "a")
+with open("wordlist5.txt") as w:
+    items = f.readlines()
+    items2 = w.readlines()
+    #items3 = g.readlines()
+    #print(items)
+    for item in items2:
+        if item not in items:
+            g.write(item)
+        #inFile = False
+        #for word in w:
+        #    if word == item:
+        #        inFile = True
+        #        break
+        #if not inFile:
+        #    g.write(item)
+f.close()
+g.close()
+
+# deletes repeats from the pangrams
+infilename = open("wordlist4.txt", "r")
+outfile = open("wordlist6.txt", "w")
+lines_seen = set() # holds lines already seen
+for line in infilename:
+    if line not in lines_seen: # not a duplicate
+        outfile.write(line)
+        lines_seen.add(line)
+outfile.close()
+"""
+
 
 def PrintBoard(letters):
     middle_letter = letters[0]
@@ -113,8 +160,14 @@ def PlayGame(words, letters, totalPoints):
         # W: display all the user's obtained words
         elif option == 'W':
             print("\nYou have found", len(myWords), "words:")
+            counter = 0
             for word in myWords:
-                print(word)
+                if counter % 10 == 9:
+                    print(word)
+                else:
+                    print(word, "", end="")
+                counter += 1
+            print("")
             print("")
 
         # P: display the points for each ranking, and the user's total points and ranking
@@ -123,8 +176,8 @@ def PlayGame(words, letters, totalPoints):
             print("Total number of points:", totalPoints)
             print("Your number of words:", len(myWords))
             print("Your current score:", userPoints)
-            print("Your current level:", currentLevel)
-            print("Point totals:")
+            print("Your current ranking:", currentLevel)
+            print("Point totals for rankings:")
             for key, value in pointTotals.items():
                 print(" ", key, value)
             print("")
@@ -252,7 +305,8 @@ def RandomGen():
 if __name__ == '__main__':
     print("Welcome to Spelling Bee! Press P to start a new puzzle. Press Q to quit.")
     option = ""
-    with open("letterlist.txt") as l:
+    filename = "archive.txt"
+    with open(filename) as l:
         while option != 'Q':
             option = input("Enter:")
             if option == 'P':
@@ -260,30 +314,35 @@ if __name__ == '__main__':
                 content = l.readlines()
 
                 # format the output of the file to make it more readable for the user when selecting a puzzle to play
+                puzzle_list = []
                 for line in content:
-                    lets = line[3:-1]
+                    first_space_index = line.find(" ")
+                    lets = line[first_space_index:-1]
                     arr = []
                     for let in lets:
                         arr.append(let)
                     arr.sort()
-                    print("Puzzle #", line[0:2], end="")
-                    print(" (letters: ", end="")
+                    puzzle_list.append(line[0:first_space_index])
+                    print("Puzzle:", line[0:first_space_index], end="")
+                    print(" (letters:", end="")
                     for let in arr:
                         print(let, "", end="")
                     print(") ", end="")
-                    print("( middle letter:", line[3], ")")
+                    print("( middle letter:", line[first_space_index+1], ")")
                 validPuzzle = False
                 randomPuzzle = False
 
                 # input validation to check the user entered a valid puzzle number or R for a random puzzle
                 while not validPuzzle:
-                    puzzleNum = input("\nWhich puzzle would you like to play? (type the number, or R for a random set of letters): ")
+                    puzzleNum = input("\nWhich puzzle would you like to play? (type the number/date, or R for a random set of letters): ")
                     if puzzleNum == 'R':
                         randomPuzzle = True
                         validPuzzle = True
-                    elif puzzleNum.isdigit() and 0 < int(puzzleNum) <= len(content):
+                    #elif puzzleNum.isdigit() and 0 < int(puzzleNum) <= len(content):
+                    #    # TODO: fix this functionality to allow user to type a date
+                    #    validPuzzle = True
+                    elif puzzleNum in puzzle_list:
                         validPuzzle = True
-
                 # call a function to generate random letters if random puzzle
                 if randomPuzzle:
                     randLetList = RandomGen()
@@ -291,8 +350,8 @@ if __name__ == '__main__':
 
                 # otherwise, pass the letters for the appropriate puzzle in to AddWords
                 else:
-                    c = content[int(puzzleNum)-1]
-                    let = c[3:]
+                    c = content[puzzle_list.index(puzzleNum)]
+                    let = c[line.find(" ")+1:]
                     letterArray = []
                     for letter in let:
                         letterArray.append(letter)
